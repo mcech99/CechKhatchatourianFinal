@@ -21,7 +21,7 @@ The private `int` fields are `accumulator`, `instructionPointer`, `memoryBase`.
 Also in `Model` put the _enum_ 
 
 ```java
-	static enum Modes {
+	static enum Mode {
 		INDIRECT, DIRECT, IMMEDIATE;
 		Mode next() {
 			if (this==DIRECT) return IMMEDIATE;
@@ -31,4 +31,5 @@ Also in `Model` put the _enum_
 	}
 ```
 
+Also in `Model` put the interface `Instruction` that declares the method `void execute(int arg, Mode mode)`
 

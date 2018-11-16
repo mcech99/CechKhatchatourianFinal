@@ -31,5 +31,17 @@ Also in `Model` put the _enum_
 	}
 ```
 
-Also in `Model` put the interface `Instruction` that declares the method `void execute(int arg, Mode mode)`
+Also in `Model` put the interface `Instruction` that declares the method `void execute(int arg, Mode mode)` and an interface `HaltCallBack` that declares the method `void halt()`.
+
+For now, give Model the _private_ fields `final Instruction[] INSTR` an array of length 15, `CPU cpu = new CPU()` and `Data dataMemory = new Data()`, `HaltCallBack callback`.
+
+A LOT of work goes into the main constructor `public Model(HaltCallBack cb)`. 
+
+The first line is `callBack = cb;` Then put the comment `//Job initialization goes here later`. Next we make all the instructions of our computer. Since Interface is a _functional_ interface, we can use lambda expressions. This time they are recursive.
+
+The instructions are ADD, AND, CMPL, CMPZ, DIV, HALT, JMPZ, JUMP, LOD, MUL, NOP, NOT, STO, SUB.
+
+* HALT, NOT, NOP take no argument (although we pass 0 to `execute`) and the `Mode` should be null, since it is ignored.
+* CMPL, CMPZ use the argument as a dataMemory address, which is the DIRECT Mode.
+
 

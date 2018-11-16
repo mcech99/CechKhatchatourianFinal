@@ -31,6 +31,12 @@ Also in `Model` put the _enum_
 	}
 ```
 
+Once you have done this, put the following import at the beginning, just after `package project`
+
+```java
+import static project.Model.Mode.*;
+```
+
 Also in `Model` put the interface `Instruction` that declares the method `void execute(int arg, Mode mode)` and an interface `HaltCallBack` that declares the method `void halt()`.
 
 For now, give Model the _private_ fields `final Instruction[] INSTR` an array of length 15, `CPU cpu = new CPU()` and `Data dataMemory = new Data()`, `HaltCallBack callback`.
@@ -43,8 +49,50 @@ The instructions are ADD, AND, CMPL, CMPZ, DIV, HALT, JMPZ, JUMP, LOD, MUL, NOP,
 
 * HALT, NOT, NOP take no argument (although we pass 0 to `execute`) and the `Mode` should be null, since it is ignored.
 * CMPL, CMPZ use the argument as a dataMemory address, which is the DIRECT Mode and it is the value stored in dataMemory that is used in the instruction.
-* AND only uses IMMEDIATE and DIRECT Modes. The IMMEDIATE Mode is the one where the argument is the actual value used in the instruction.
 * STO only uses DIRECT and INDIRECT Modes. The INDIRECT Mode uses the argument as a dataMemory address _but_ the value at that address is then used as the dataMemory address for the instruction itself. STO is a mnemonic for "Store in memory" and it sets the dataMemory at the index in the instruction to the curretn value in the accumulator of the CPU
 * JUMP and JMPZ are jump instructions that change the `instructionPointer` and use the 3 Modes in slightly different ways as explained below.
-* The other 5 inststructions use all 3 modes as we will describe below when discussing ADD.
+* The other 6 inststructions use all 3 modes as we will describe and we give the complete lambda expression for ADD.
+
+Back to the constructor of `Model`: we will index the INSTR array in hexadecimal 0x0, 0x1, ..., 0xF.
+
+The NOP (no operation) instruction:
+
+```java
+INSTR[0x0] = (arg, mode) -> {
+	if(mode != null) throw new IllegalArgumentException(
+			"Illegal Mode in NOP instruction");
+	cpu.instructionPointer++;
+};
+```
+
+The LOD (load accumulator from memory) is at `INSTR[0x1]`. Compare the steps in ADD below. First throw `IllegalArgumentException("Illegal Mode in LOD instruction")` if `mode` is null. After that, if `mode != IMMEDIATE` call `INSTR[0x1].execute` with the arguments `dataMemory.getData(cpu.memoryBase + arg)` and `mode.next()`--this is the recursion--else do 2 things: change `cpu.accumulator` to equal `arg` and increment the `instruction pointer` as above. 
+
+The STO (store accumulator into memory) is at `INSTR[0x2]`. Throw `IllegalArgumentException("Illegal Mode in STO instruction")` if `mode` is null or IMMEDIATE. After that, if `mode != DIRECT` call `INSTR[0x2].execute` with the arguments `dataMemory.getData(cpu.memoryBase + arg)` and `mode.next()`, else do 2 things: set the `dataMemory` at index `cpu.memoryBase+arg` to the value `cpu.accumulator` and then increment the `instruction pointer` as above.
+
+ADD is at `INSTR[0x3]` and add a value to the `accumualtor`
+
+```java
+//INSTRUCTION entry for "ADD"
+INSTR[0x3] = (arg, mode) -> {
+	if(mode == null) {
+		throw new IllegalArgumentException(
+				"Illegal Mode in ADD instruction");
+	}
+	if(mode != IMMEDIATE) {
+		INSTR[0x3].execute(
+				dataMemory.getData(cpu.memoryBase + arg), mode.next());
+	} else {
+		cpu.accumulator += arg;
+		cpu.instructionPointer++;
+	}
+};
+```
+
+SUB is at `INSTR[0x4]` is the same except you have `-=arg` instead of `+=arg`.
+
+MUL is at `INSTR[0x5]` is the same except you have `*=arg` instead of `+=arg`.
+
+DIV is at `INSTR[0x6]` is the same except you have `/=arg` instead of `+=arg`. However before you divide you check for 0, so the `else` begins with `if(arg == 0) {throw new DivideByZeroException("Divide by Zero");}`, where the exception is one of the files provided.
+
+AND is at `INSTR[0x7]` is a logical and, where 0 means false and anything elase means true. You throw
 

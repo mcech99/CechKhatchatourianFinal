@@ -9,6 +9,26 @@ The computer has a Model that describes the CPU, the Instruction type that the C
 
 Create two packages `project` and `projectview`. Make a class `Data` with a `public static constant int DATA_SIZE` set to 2048 (that may be changed before the project is complete). The private fields are an `int[]` array called `data` of length `DATA_SIZE` and an int classed `changedIndex`, initially -1. We need package private methods: a getter method for this array for JUnit testing, `getData(int index)` and `setData(int index, int value)` to read and write values from and to this array. In these method throw `MemoryAccessException` if index is negative to too large. Here is the unchecked Exception class `MemoryAccessException` with the message _"Illegal access to data memory, index " + index_ -- see the files above. Also provide a getter method for `changedIndex`. In the method `setData(int index, int value)`, assign `changedIndex` to `index`. The `changedIndex` will be used by the GUI to colorize the location that is changed.
 
+Make a class `Model`. A lot goes on in this class, which will be build up in steps. In `Model`, make a nested class
 
+```java
+  static class CPU {
+    ...
+  }
+```
+The private `int` fields are `accumulator`, `instructionPointer`, `memoryBase`.
+
+Also in `Model` put the _enum_ 
+
+```java
+	static enum Modes {
+		INDIRECT, DIRECT, IMMEDIATE;
+		Mode next() {
+			if (this==DIRECT) return IMMEDIATE;
+			if (this==INDIRECT) return DIRECT;
+			return null;
+		}
+	}
+```
 
 

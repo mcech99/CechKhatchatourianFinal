@@ -48,8 +48,7 @@ The first line is `callBack = cb;` Then put the comment `//Job initialization go
 The instructions are ADD, AND, CMPL, CMPZ, DIV, HALT, JMPZ, JUMP, LOD, MUL, NOP, NOT, STO, SUB.
 
 * HALT, NOT, NOP take no argument (although we pass 0 to `execute`) and the `Mode` should be null, since it is ignored.
-* CMPL, CMPZ use the argument as a dataMemory address, which is the DIRECT Mode and it is the value stored in dataMemory that is used in the instruction.
-* STO only uses DIRECT and INDIRECT Modes. The INDIRECT Mode uses the argument as a dataMemory address _but_ the value at that address is then used as the dataMemory address for the instruction itself. STO is a mnemonic for "Store in memory" and it sets the dataMemory at the index in the instruction to the curretn value in the accumulator of the CPU
+* CMPL, CMPZ, and STO only use DIRECT and INDIRECT Modes. The INDIRECT Mode uses the argument as a dataMemory address _but_ the value at that address is then used as the dataMemory address for the instruction itself. STO is a mnemonic for "Store in memory" and it sets the dataMemory at the index in the instruction to the current value in the accumulator of the CPU. CMPL, CMPZ examine the value in memory and modify the accumulator accordingly as described below.
 * JUMP and JMPZ are jump instructions that change the `instructionPointer` and use the 3 Modes in slightly different ways as explained below.
 * The other 6 inststructions use all 3 modes as we will describe and we give the complete lambda expression for ADD.
 

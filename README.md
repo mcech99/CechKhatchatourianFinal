@@ -88,11 +88,14 @@ INSTR[0x3] = (arg, mode) -> {
 };
 ```
 
-SUB is at `INSTR[0x4]` is the same except you have `-=arg` instead of `+=arg`.
+SUB is at `INSTR[0x4]` and is the same except you have `-=arg` instead of `+=arg`.
 
-MUL is at `INSTR[0x5]` is the same except you have `*=arg` instead of `+=arg`.
+MUL is at `INSTR[0x5]` and is the same except you have `*=arg` instead of `+=arg`.
 
-DIV is at `INSTR[0x6]` is the same except you have `/=arg` instead of `+=arg`. However before you divide you check for 0, so the `else` begins with `if(arg == 0) {throw new DivideByZeroException("Divide by Zero");}`, where the exception is one of the files provided.
+DIV is at `INSTR[0x6]` and is the same except you have `/=arg` instead of `+=arg`. However before you divide you check for 0, so the `else` begins with `if(arg == 0) {throw new DivideByZeroException("Divide by Zero");}`, where the exception is one of the files provided.
 
-AND is at `INSTR[0x7]` is a logical and, where 0 means false and anything elase means true. You throw
+AND is at `INSTR[0x7]` and is a logical and, where 0 means false and anything elase means true. You throw the exception if `mode` is null. The difference is in the `else` part. if `arg` is not zero _and_ `cpu.accumulator` is not zero, then set `cpu.accumulator` to 1, else set `cpu.accumulator to 0`. After that you still increment the instruction pointer. 
+
+NOT is at `INSTR[0x8]` and is logical negation. If `mode` is not null, there is an exception as in NOP. Then if `cpu.accumulator` is not 0, set it to 0, else set it to 1. Also increment the instruction pointer. 
+
 

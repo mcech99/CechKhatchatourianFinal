@@ -1,5 +1,5 @@
 # project
-Final Project
+Final Project--you should work in pairs if possible
 
 Due December 7 but extensions into exam week will be accepted if most of the work has been completed and committed to your Github repository.
 
@@ -21,14 +21,14 @@ The private `int` fields are `accumulator`, `instructionPointer`, `memoryBase`.
 Also in `Model` put the _enum_ 
 
 ```java
-	static enum Mode {
-		INDIRECT, DIRECT, IMMEDIATE;
-		Mode next() {
-			if (this==DIRECT) return IMMEDIATE;
-			if (this==INDIRECT) return DIRECT;
-			return null;
-		}
+static enum Mode {
+	INDIRECT, DIRECT, IMMEDIATE;
+	Mode next() {
+		if (this==DIRECT) return IMMEDIATE;
+		if (this==INDIRECT) return DIRECT;
+		return null;
 	}
+}
 ```
 
 Once you have done this, put the following import at the beginning, just after `package project`
@@ -37,9 +37,11 @@ Once you have done this, put the following import at the beginning, just after `
 import static project.Model.Mode.*;
 ```
 
-Also in `Model` put the interface `Instruction` that declares the method `void execute(int arg, Mode mode)` and an interface `HaltCallBack` that declares the method `void halt()`.
+Also in `Model` put the `static interface Instruction` that declares the method `void execute(int arg, Mode mode)` and the `static interface HaltCallBack` that declares the method `void halt()`.
 
-For now, give Model the _private_ fields `final Instruction[] INSTR` an array of length 15, `CPU cpu = new CPU()` and `Data dataMemory = new Data()`, `HaltCallBack callback`.
+We now have to add some support classes. 
+
+For now, give Model the _private_ fields `final Instruction[] INSTR` an array of length 16, `CPU cpu = new CPU()` and `Data dataMemory = new Data()`, `HaltCallBack callback`.
 
 A LOT of work goes into the main constructor `public Model(HaltCallBack cb)`. 
 

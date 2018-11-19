@@ -175,7 +175,7 @@ INSTR[0xf] = (arg, mode) -> {
 
 NOW WRITE THE INSTRUCTION lambda expressions IN THE CONSTRUCTOR and test them with the InstructionTester.
 
-
+There will be more douments coming shortly
 
 
 

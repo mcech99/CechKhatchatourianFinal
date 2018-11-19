@@ -173,7 +173,7 @@ INSTR[0xf] = (arg, mode) -> {
 * `public void setMemBase(int offsetInit)` sets `cpu.memoryBase` to `offsetInit`
 * `public Job getCurrentJob()` returns `currentJob`
 
-
+NOW WRITE THE INSTRUCTION lambda expressions IN THE CONSTRUCTOR and test them with the InstructionTester.
 
 
 

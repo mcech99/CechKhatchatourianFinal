@@ -1,5 +1,4 @@
-# project
-Final Project--you should work in pairs if possible
+# Final Project--you should work in pairs if possible
 
 Due December 7 but extensions into exam week will be accepted if most of the work has been completed and committed to your Github repository.
 

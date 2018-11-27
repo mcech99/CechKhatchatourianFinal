@@ -3,6 +3,7 @@ import static org.junit.Assume.assumeNoException;
 import static project.Model.Mode.*;
 import java.util.Set;
 import java.util.Map;
+import static java.util.Map.entry;
 
 public class Model {
 	
@@ -29,6 +30,8 @@ public class Model {
 			jobs[i].getCurrentState().enter();
 		}
 		currentJob = jobs[0];
+		
+		//----------- INSTRUCTIONS ---------------------
 		//INSTRUCTION entry for "NOP"
 		INSTR[0x0] = (arg, mode) -> {
 			if(mode != null) throw new IllegalArgumentException(
@@ -136,7 +139,7 @@ public class Model {
 			if(mode != null) throw new IllegalArgumentException(
 					"Illegal Mode in NOT instruction");
 			if(cpu.accumulator!=0) cpu.accumulator = 0;
-			else cpu.accumulator = 0;
+			else cpu.accumulator = 1;
 			cpu.instructionPointer++;
 		};
 		//INSTRUCTION entry for "CMPL"
@@ -148,8 +151,9 @@ public class Model {
 				arg = dataMemory.getData(cpu.memoryBase + arg);
 				if(arg<0) cpu.accumulator = 1;
 				else cpu.accumulator = 0;
+				cpu.instructionPointer++;
 			}
-			cpu.instructionPointer++;
+
 		};
 		//INSTRUCTION entry for "CMPZ"
 		INSTR[0xa] = (arg, mode) -> {
@@ -160,8 +164,8 @@ public class Model {
 				arg = dataMemory.getData(cpu.memoryBase + arg);
 				if(arg==0) cpu.accumulator = 1;
 				else cpu.accumulator = 0;
+				cpu.instructionPointer++;
 			}
-			cpu.instructionPointer++;
 		};
 		//INSTRUCTION entry for "JUMP"
 		INSTR[0xb] = (arg, mode) -> {
@@ -194,7 +198,7 @@ public class Model {
 		};
 
 	}
-	//FIXME: not sure if index is needed here?
+	
 	public int[] getData() {
 		return dataMemory.getData();
 	}
@@ -216,7 +220,7 @@ public class Model {
 	}
 	
 	public int getData(int index) {
-		dataMemory.getData(index);
+		return dataMemory.getData(index);
 	}
 	
 	public void setAccum(int accInit) {
